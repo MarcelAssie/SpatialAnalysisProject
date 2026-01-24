@@ -1,0 +1,81 @@
+============================================================
+RAPPORT D'ANALYSE SPATIO-STATISTIQUE
+============================================================
+
+Date: 2026-01-16 15:54:45
+Nombre d'observations: 716216
+Période: 2014-2021
+
+============================================================
+1. RÉSUMÉ DES VARIATIONS
+============================================================
+
+Variations de durée (Δ_DUREE):
+  • Moyenne: -0.00 min
+  • Écart-type: 3.30 min
+  • Intervalle: [-35.34, 42.42] min
+
+Variations des parts modales:
+  • Marche à pied       : -0.0000 ↘ (moyenne)
+  • Transports en commun: -0.0000 ↘ (moyenne)
+  • Voiture/Camion      :  0.0000 ↗ (moyenne)
+  • Deux-roues motorisé :  0.0000 ↗ (moyenne)
+  • Vélo                : -0.0000 ↘ (moyenne)
+
+============================================================
+2. CORRÉLATIONS SIGNIFICATIVES
+============================================================
+  • Marche à pied       : r = -0.036 (negative)
+  • Transports en commun: r = -0.356 (negative)
+  • Voiture/Camion      : r = 0.357 (positive)
+  • Deux-roues motorisé : r = 0.050 (positive)
+  • Vélo                : r = 0.009 (positive)
+
+============================================================
+3. INSIGHTS PAR DISTANCE
+============================================================
+
+  Segment <5km:
+    • Δ Durée: 0.00 min
+    • Δ TC: 0.0000
+    • Δ Voiture: -0.0000
+
+  Segment 5-10km:
+    • Δ Durée: 0.00 min
+    • Δ TC: -0.0000
+    • Δ Voiture: 0.0000
+
+  Segment 10-20km:
+    • Δ Durée: 0.00 min
+    • Δ TC: -0.0000
+    • Δ Voiture: 0.0000
+
+  Segment 20-50km:
+    • Δ Durée: -0.00 min
+    • Δ TC: -0.0000
+    • Δ Voiture: 0.0000
+
+  Segment 50-100km:
+    • Δ Durée: -0.02 min
+    • Δ TC: 0.0000
+    • Δ Voiture: -0.0000
+
+  Segment >100km:
+    • Δ Durée: 0.24 min
+    • Δ TC: 0.0000
+    • Δ Voiture: 0.0000
+
+============================================================
+4. RECOMMANDATIONS POUR L'ANALYSE SUIVANTE
+============================================================
+
+  1. Vérifier l'autocorrélation spatiale des résidus
+  2. Intégrer les variables socio-économiques comme contrôles
+  3. Tester des modèles à effets fixes par trajet
+  4. Analyser les différences entre trajets intra/inter-départementaux
+  5. Examiner les outliers (trajets avec variations extrêmes)
+        
+
+============================================================
+FIN DU RAPPORT
+============================================================
