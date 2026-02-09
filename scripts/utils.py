@@ -56,7 +56,7 @@ class GlobalAnalysis:
             'VL': '#9467bd'
         }
 
-    def _global_viz(self, sample_trajet: str = "92026 - 92062", sample_year: int = 2021):
+    def _global_viz(self, sample_trajet: str = "92040 - 92062", sample_year: int = 2022):
         trans_cols = ['TRANS_MP', 'TRANS_TC', 'TRANS_VT', 'TRANS_DRM', 'TRANS_VL']
         colors = list(self.mode_colors.values())
         labels = list(self.mode_names.values())
@@ -96,7 +96,7 @@ class GlobalAnalysis:
             self.logger.info(f"Tracé du camembert concentrique pour le trajet '{sample_trajet}'")
             # Préparation des données
             valeurs_annuelles = []
-            annees = list(range(2013, 2022))
+            annees = list(range(2017, 2023))
 
             for annee in annees:
                 if (sample_trajet, annee) in self.descriptive_data.index:

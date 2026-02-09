@@ -19,7 +19,7 @@ class SpatialStatisticalAnalysis:
         self.ign_communes = gpd.GeoDataFrame()
         self.insee_communes  = None
         self.ign_com_geoms = None
-        self.data_2016 = pd.DataFrame()
+        self.data_2017 = pd.DataFrame()
         self.dfs = {}
         self.merged_data = pd.DataFrame()
         self.descriptive_data = pd.DataFrame()
@@ -59,7 +59,7 @@ class SpatialStatisticalAnalysis:
                         if len(parts) > 2 and parts[2].isdigit():
                             year = int(parts[2])
                             self.dfs[year] = df
-                            if year == 2021:
+                            if year == 2022:
                                 self.insee_communes = df.copy()
                     else:
                         if file_ext.lower() == '.shp':
@@ -72,8 +72,8 @@ class SpatialStatisticalAnalysis:
                 except Exception as e:
                     self.logger.error(f"Erreur lors du chargement de {f_path}: {e}")
 
-            if not self.dfs[2016].empty:
-                self.data_2016 = self.dfs[2016].copy()
+            if not self.dfs[2017].empty:
+                self.data_2017 = self.dfs[2017].copy()
 
             if ign_communes is not None:
                 self.ign_communes = ign_communes
@@ -172,26 +172,26 @@ class SpatialStatisticalAnalysis:
         return data_merged
 
     def compute_a_year_duration(self):
-        self.logger.info("Ajout de la 'durée' pour l'année 2016")
+        self.logger.info("Ajout de la 'durée' pour l'année 2017")
         try:
-            self.data_2016 = self.data_2016[self.base_cols].copy()
+            self.data_2017 = self.data_2017[self.base_cols].copy()
             vitesse_tc = 25
-            duree_base = self.data_2016['DISTANCE'] / vitesse_tc
-            variation = np.random.normal(0, 0.05, len(self.data_2016))
-            self.data_2016['DUREE'] = duree_base * 60 * (1 + variation)
-            self._save_data(self.data_2016, "2016_data_with_duration")
+            duree_base = self.data_2017['DISTANCE'] / vitesse_tc
+            variation = np.random.normal(0, 0.05, len(self.data_2017))
+            self.data_2017['DUREE'] = duree_base * 60 * (1 + variation)
+            self._save_data(self.data_2017, "2017_data_with_duration")
         except Exception as e:
             self.logger.error(f"Erreur dans compute_a_year_duration: {e}")
 
     def generate_all_years_duration(self):
-        self.logger.info("Calculs préliminaires sur l'année 2016")
-        self.data_2016 = self._transform_data(self.data_2016)
-        self.data_2016 = self.join_communes_geoms(self.data_2016)
+        self.logger.info("Calculs préliminaires sur l'année 2017")
+        self.data_2017 = self._transform_data(self.data_2017)
+        self.data_2017 = self.join_communes_geoms(self.data_2017)
         # raise
         self.compute_a_year_duration()
-        self.dfs[2016] = self.data_2016
-        self.logger.info("Calculs sur les années 2017 à 2021")
-        for year in range(2017, 2022):
+        self.dfs[2017] = self.data_2017
+        self.logger.info("Calculs sur les années 2018 à 2022")
+        for year in range(2018, 2023):
             self.logger.info(f"Année {year}")
             df_prev = self.dfs[year - 1].copy()
 
@@ -205,8 +205,9 @@ class SpatialStatisticalAnalysis:
             variation_duree = np.random.normal(0, 0.05, len(df))
 
             # Récupérer la durée de l'année précédente
-            prev_duree = df_prev['DUREE'].copy() if year == 2016 else df_prev['DUREE'].copy()
+            prev_duree = df_prev['DUREE'].copy() if year == 2017 else df_prev['DUREE'].copy()
             df['DUREE'] = prev_duree * (1 + variation_duree)
+            # df['DUREE'] = df_prev.loc[df.index, 'DUREE'] * (1 + variation_duree)
 
             # Calculer delta
             # delta = (df['DUREE'] - prev_duree) / prev_duree
@@ -285,7 +286,7 @@ class SpatialStatisticalAnalysis:
         df_analytic = df.copy()
 
         df_analytic = df_analytic[
-            df_analytic['ANNEE'] > 2016
+            df_analytic['ANNEE'] > 2017
             ].copy()
 
         self.analytic_data = df_analytic[

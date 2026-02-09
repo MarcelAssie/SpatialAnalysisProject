@@ -2,68 +2,67 @@
 RAPPORT D'ANALYSE SPATIO-STATISTIQUE
 ============================================================
 
-Date: 2026-01-16 15:54:45
-Nombre d'observations: 716216
-Période: 2014-2021
+Date: 2026-02-09 15:23:54
+Nombre d'observations: 219293
+Période: 2018-2022
 
 ============================================================
 1. RÉSUMÉ DES VARIATIONS
 ============================================================
 
 Variations de durée (Δ_DUREE):
-  • Moyenne: -0.00 min
-  • Écart-type: 3.30 min
-  • Intervalle: [-35.34, 42.42] min
+  • Moyenne: 0.53 min
+  • Écart-type: 18.27 min
+  • Intervalle: [-222.78, 220.28] min
 
 Variations des parts modales:
-  • Marche à pied       : -0.0000 ↘ (moyenne)
-  • Transports en commun: -0.0000 ↘ (moyenne)
-  • Voiture/Camion      :  0.0000 ↗ (moyenne)
-  • Deux-roues motorisé :  0.0000 ↗ (moyenne)
-  • Vélo                : -0.0000 ↘ (moyenne)
+  • Marche à pied       :  0.0003 ↗ (moyenne)
+  • Transports en commun:  0.0010 ↗ (moyenne)
+  • Voiture/Camion      : -0.0022 ↘ (moyenne)
+  • Deux-roues motorisé : -0.0003 ↘ (moyenne)
+  • Vélo                :  0.0011 ↗ (moyenne)
 
 ============================================================
 2. CORRÉLATIONS SIGNIFICATIVES
 ============================================================
-  • Marche à pied       : r = -0.036 (negative)
-  • Transports en commun: r = -0.356 (negative)
-  • Voiture/Camion      : r = 0.357 (positive)
-  • Deux-roues motorisé : r = 0.050 (positive)
-  • Vélo                : r = 0.009 (positive)
+  • Marche à pied       : r = 0.011 (positive)
+  • Transports en commun: r = 0.004 (positive)
+  • Voiture/Camion      : r = -0.007 (negative)
+  • Vélo                : r = 0.008 (positive)
 
 ============================================================
 3. INSIGHTS PAR DISTANCE
 ============================================================
 
   Segment <5km:
-    • Δ Durée: 0.00 min
-    • Δ TC: 0.0000
-    • Δ Voiture: -0.0000
+    • Δ Durée: 6.97 min
+    • Δ TC: 0.0014
+    • Δ Voiture: -0.0061
 
   Segment 5-10km:
-    • Δ Durée: 0.00 min
-    • Δ TC: -0.0000
-    • Δ Voiture: 0.0000
+    • Δ Durée: 5.15 min
+    • Δ TC: 0.0023
+    • Δ Voiture: -0.0046
 
   Segment 10-20km:
-    • Δ Durée: 0.00 min
-    • Δ TC: -0.0000
-    • Δ Voiture: 0.0000
+    • Δ Durée: 2.08 min
+    • Δ TC: 0.0016
+    • Δ Voiture: -0.0025
 
   Segment 20-50km:
-    • Δ Durée: -0.00 min
-    • Δ TC: -0.0000
-    • Δ Voiture: 0.0000
+    • Δ Durée: -3.13 min
+    • Δ TC: -0.0001
+    • Δ Voiture: -0.0002
 
   Segment 50-100km:
-    • Δ Durée: -0.02 min
-    • Δ TC: 0.0000
-    • Δ Voiture: -0.0000
+    • Δ Durée: -12.49 min
+    • Δ TC: 0.0004
+    • Δ Voiture: -0.0005
 
   Segment >100km:
-    • Δ Durée: 0.24 min
-    • Δ TC: 0.0000
-    • Δ Voiture: 0.0000
+    • Δ Durée: -12.31 min
+    • Δ TC: 0.0294
+    • Δ Voiture: -0.0294
 
 ============================================================
 4. RECOMMANDATIONS POUR L'ANALYSE SUIVANTE
