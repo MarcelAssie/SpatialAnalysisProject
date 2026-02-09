@@ -41,7 +41,7 @@ class SpatialStatisticalAnalysis:
 
 
 
-    def load_data(self, code_geo_reg:str ='INSEE_REG', code_geo_com:str ='INSEE_COM', layer:str="COMMUNE", delimiter:str=';'):
+    def load_data(self, code_geo_reg:str ='INSEE_REG', code_geo_com:str ='INSEE_COM', delimiter:str=';'):
         self.logger.info(f"Chargement des données")
         file_paths = [os.path.join(self.input_folder, f) for f in os.listdir(self.input_folder)]
         ign_communes = None
@@ -55,7 +55,6 @@ class SpatialStatisticalAnalysis:
                 try:
                     if file_ext.lower() == '.csv' and not "coordinates" in f_path:
                         df = pd.read_csv(f_path, delimiter=delimiter)
-                        # Extract year from filename (e.g., FD_MOBPRO_2016_result.csv)
                         parts = os.path.basename(f_path).split("_")
                         if len(parts) > 2 and parts[2].isdigit():
                             year = int(parts[2])
@@ -68,9 +67,6 @@ class SpatialStatisticalAnalysis:
                         elif file_ext.lower() == '.gpkg':
                             if "COMMUNE_COMMUNS" in f_path:
                                 self.ign_com_geoms = gpd.read_file(f_path)
-                                ign_communes = self.ign_com_geoms
-                            else:
-                                ign_communes = gpd.read_file(f_path)
                         else:
                             continue
                 except Exception as e:
@@ -90,106 +86,113 @@ class SpatialStatisticalAnalysis:
             raise ValueError("Aucunes données trouvées")
 
     def _transform_data(self, data):
-        self.logger.info("Transformation des données récupérée")
-        data.rename(columns={
-            "COMMUNE": "COM_ORG", "DCLT": "COM_DEST", "Deux-roues motorisé": "TRANS_DRM",
-            "Marche à pied": "TRANS_MP", "Pas de transport (travail domicile)": "TRANS_M",
-            "Transports en commun": "TRANS_TC", "Voiture, camion, fourgonnette": "TRANS_VT",
+        self.logger.info("Transformation des données récupérées")
+        
+        mapping = {
+            "COMMUNE": "COM_ORG", 
+            "DCLT": "COM_DEST", 
+            "Deux-roues motorisé": "TRANS_DRM",
+            "Marche à pied": "TRANS_MP", 
+            "Pas de transport (travail domicile)": "TRANS_M",
+            "Transports en commun": "TRANS_TC", 
+            "Voiture, camion, fourgonnette": "TRANS_VT",
             "Vélo": "TRANS_VL"
-        }, inplace=True)
+        }
+        
+        data.rename(columns=mapping, inplace=True)
 
+        expected_trans = ["TRANS_DRM", "TRANS_MP", "TRANS_M", "TRANS_TC", "TRANS_VT", "TRANS_VL"]
+        for col in expected_trans:
+            if col not in data.columns:
+                self.logger.warning(f"Colonne {col} manquante, création avec des zéros")
+                data[col] = 0.0
 
-        #-------------------------------------------------------------------------
-        # # TODO : Demander à Imane de garder 'TOTAL_FLUX' dans les données de base
-        # cols_flux = ['TRANS_DRM', 'TRANS_MP', 'TRANS_TC', 'TRANS_VT', 'TRANS_VL']
-        # df["TOTAL_FLUX"] = df[cols_flux].sum(axis=1)
-        #-------------------------------------------------------------------------
+        if "TOTAL_FLUX" not in data.columns:
+            data["TOTAL_FLUX"] = data[expected_trans].sum(axis=1)
+
         data['COM_ORG'] = data['COM_ORG'].astype(str)
         data['COM_DEST'] = data['COM_DEST'].astype(str)
         data['COM_ORG'] = data['COM_ORG'].str.zfill(5)
         data['COM_DEST'] = data['COM_DEST'].str.zfill(5)
         return data
 
-    def join_communes_geoms(self, data, code_geo_com: str = "COMMUNE"):
-        self.logger.info("Ajout des centroids origine / destination")
+    def join_communes_geoms(self, data):
+        self.logger.info("Ajout des centroids origine / destination et filtrage des paires valides")
 
-        communes = self.ign_communes.set_geometry("geometry")
+        communes_geoms = self.ign_com_geoms.copy()
 
-        if communes.crs is None:
-            communes = communes.set_crs(epsg=2154)
+        valid_geoms_mask = (communes_geoms['geometry'].notna()) & (communes_geoms['geom_dclt'].notna())
+        communes_clean = communes_geoms[valid_geoms_mask].copy()
 
-        communes_l93 = communes.to_crs(epsg=2154)
+        self.logger.info(f"Paires de communes avec géométries valides : {len(communes_clean)} / {len(communes_geoms)}")
 
-        # Calcul des centroids
-        communes_l93["centroid_org"] = communes_l93.geometry.centroid
-        communes_l93["centroid_dest"] = communes_l93.geom_dclt.centroid
+        if communes_clean.crs is None:
+            communes_clean = communes_clean.set_crs(epsg=2154)
+        else:
+            communes_clean = communes_clean.to_crs(epsg=2154)
 
-        # Reprojection en WGS84
-        communes_wgs84 = communes_l93.to_crs(epsg=4326)
+        # Centroids
+        communes_clean["centroid_org_geom"] = communes_clean.geometry.centroid
+        gs_dest = gpd.GeoSeries.from_wkt(communes_clean["geom_dclt"])
+        gs_dest = gs_dest.set_crs(communes_clean.crs)
+        communes_clean["centroid_dest_geom"] = gs_dest.centroid
 
-        # Extraction coordonnées
-        communes_wgs84["lon_org"] = communes_wgs84.centroid_org.x
-        communes_wgs84["lat_org"] = communes_wgs84.centroid_org.y
-        communes_wgs84["lon_dest"] = communes_wgs84.centroid_dest.x
-        communes_wgs84["lat_dest"] = communes_wgs84.centroid_dest.y
+        # Coordonnées WGS84
+        gdf_org_pts = gpd.GeoDataFrame(geometry=communes_clean["centroid_org_geom"], crs=2154).to_crs(epsg=4326)
+        communes_clean["lon_org"] = gdf_org_pts.geometry.x
+        communes_clean["lat_org"] = gdf_org_pts.geometry.y
 
-        # Colonnes utiles uniquement
-        ref = communes_wgs84[
-            ["COMMUNE", "DCLT", "lon_org", "lat_org", "lon_dest", "lat_dest"]
-        ].copy()
+        gdf_dest_pts = gpd.GeoDataFrame(geometry=communes_clean["centroid_dest_geom"], crs=2154).to_crs(epsg=4326)
+        communes_clean["lon_dest"] = gdf_dest_pts.geometry.x
+        communes_clean["lat_dest"] = gdf_dest_pts.geometry.y
 
-        # Jointure OD
+        ref_geo = communes_clean[["COMMUNE", "DCLT", "lon_org", "lat_org", "lon_dest", "lat_dest"]]
+
         data_merged = data.merge(
-            ref,
+            ref_geo,
             left_on=["COM_ORG", "COM_DEST"],
             right_on=["COMMUNE", "DCLT"],
-            how="left"
+            how="inner"
         )
 
-        # Nettoyage
         data_merged.drop(columns=["COMMUNE", "DCLT"], inplace=True)
-        self._save_data(data_merged, "data_merged")
+
+        # Calcul de la distance
+        g = Geod(ellps='WGS84')
+        _, _, dist_meters = g.inv(
+            data_merged['lon_org'].values,
+            data_merged['lat_org'].values,
+            data_merged['lon_dest'].values,
+            data_merged['lat_dest'].values
+        )
+        data_merged['DISTANCE'] = dist_meters / 1000
+
+        self.logger.info(f"Données finales après jointure géométrique : {len(data_merged)} lignes")
 
         return data_merged
 
     def compute_a_year_duration(self):
-        self.logger.info("Ajout de la 'durée' entre chaque paire de communes sur de 2016 à 2021")
-        data_merged = self.data_2016.copy()
+        self.logger.info("Ajout de la 'durée' pour l'année 2016")
         try:
-            g = Geod(ellps='WGS84')
-            mask_valid = data_merged['lon_org'].notna() & data_merged['lon_dest'].notna()
-
-            data_merged['DISTANCE'] = np.nan
-
-            if mask_valid.any():
-                _, _, dist_meters = g.inv(
-                    data_merged.loc[mask_valid, 'lon_org'].values,
-                    data_merged.loc[mask_valid, 'lat_org'].values,
-                    data_merged.loc[mask_valid, 'lon_dest'].values,
-                    data_merged.loc[mask_valid, 'lat_dest'].values
-                )
-                data_merged.loc[mask_valid, 'DISTANCE'] = dist_meters / 1000
-
-            data_merged = data_merged[~data_merged['DISTANCE'].isna()]
-
-            self.data_2016 = data_merged[self.base_cols].copy()
+            self.data_2016 = self.data_2016[self.base_cols].copy()
             vitesse_tc = 25
             duree_base = self.data_2016['DISTANCE'] / vitesse_tc
             variation = np.random.normal(0, 0.05, len(self.data_2016))
             self.data_2016['DUREE'] = duree_base * 60 * (1 + variation)
             self._save_data(self.data_2016, "2016_data_with_duration")
         except Exception as e:
-            self.logger.error(e)
+            self.logger.error(f"Erreur dans compute_a_year_duration: {e}")
 
     def generate_all_years_duration(self):
         self.logger.info("Calculs préliminaires sur l'année 2016")
         self.data_2016 = self._transform_data(self.data_2016)
         self.data_2016 = self.join_communes_geoms(self.data_2016)
-        raise
+        # raise
         self.compute_a_year_duration()
         self.dfs[2016] = self.data_2016
         self.logger.info("Calculs sur les années 2017 à 2021")
         for year in range(2017, 2022):
+            self.logger.info(f"Année {year}")
             df_prev = self.dfs[year - 1].copy()
 
             # Garder les colonnes de base
@@ -302,7 +305,7 @@ class SpatialStatisticalAnalysis:
                     index=False
                 )
 
-            self.logger.info("Sauvegarde des données terminée")
+            self.logger.info(f"Sauvegarde de {data_output_name} terminée")
         except Exception as e:
             self.logger.error(f"Erreur lors de la sauvegarde : {e}")
 
@@ -318,31 +321,27 @@ class SpatialStatisticalAnalysis:
 
         # S'assurer que les données sont disponibles
         if self.descriptive_data.empty:
-            self.logger.warning("Données descriptives non disponibles, génération...")
+            self.logger.warning("Génération...")
             self._get_descriptive_data()
 
 
         if self.analytic_data.empty:
-            self.logger.warning("Données analytiques non disponibles, génération...")
+            self.logger.warning("Génération...")
             self._get_analytic_data()
 
 
-        # global_analysis = GlobalAnalysis(
-        #     analytic_data=self.analytic_data,
-        #     descriptive_data=self.descriptive_data,
-        #     ign_communes=self.ign_communes,
-        #     logger=self.logger,
-        #     output_folder=f"{self.output_folder}/spatial_analysis"
-        # )
+        global_analysis = GlobalAnalysis(
+            analytic_data=self.analytic_data,
+            descriptive_data=self.descriptive_data,
+            ign_communes=self.ign_communes,
+            logger=self.logger,
+            output_folder=f"{self.output_folder}/spatial_analysis"
+        )
 
-        # global_analysis.run_full_analysis()
+        global_analysis.run_full_analysis()
 
         self.logger.info("Analyse spatio-statistique terminée")
 
     def process(self):
         self.load_data()
         self.run_spatial_analysis()
-
-
-
-
