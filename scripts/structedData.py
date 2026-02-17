@@ -1,10 +1,10 @@
 import pandas as pd
 import os
-
 def transformer() :
     for i in range(17,23) :
-        input_file = "../data/input/insee_data"
-        output_file = "../data/outputinsee_data"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        input_file = os.path.join(script_dir, "..", "data", "input", "insee_data", f"FD_MOBPRO_20{i}.csv")
+        output_file = os.path.join(script_dir, "..", "data", "output", "insee_data", f"FD_MOBPRO_20{i}_result.csv")
         cols_to_use = ['REGION', 'REGLT', 'COMMUNE', 'DCLT', 'TRANS', 'IPONDI']
         if i == 16 :
             # Dictionnaire de correspondance pour les modes de transport
@@ -30,7 +30,7 @@ def transformer() :
         
         # 2. Chargement des données
         # On force COMMUNE et DCLT en 'str' pour ne pas perdre les zéros au début des codes postaux
-        df = pd.read_csv(os.path.exists(input_file), sep=';', usecols=cols_to_use, dtype={'COMMUNE': str, 'DCLT': str, 'TRANS': str})
+        df = pd.read_csv(input_file, sep=';', usecols=cols_to_use, dtype={'COMMUNE': str, 'DCLT': str, 'TRANS': str})
         
         # 3. Filtre sur l'Île-de-France (REGION 11 et REGLT 11)
         df_idf = df[(df['REGION'] == 11) & (df['REGLT'] == 11)].copy()
