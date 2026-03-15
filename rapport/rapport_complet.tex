@@ -1,0 +1,683 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- ENCODAGE ET LANGUE ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% --- POLICES ET TYPOGRAPHIE ---
+\usepackage{mathpazo}           % Police Palatino (élégante et pro)
+\usepackage[scaled=0.95]{helvet}% Helvetica pour les sans-serif
+\usepackage{courier}            % Courier pour le code
+\usepackage[protrusion=true,expansion=true]{microtype} % Micro-ajustements (rendu très propre)
+\usepackage{setspace}           % Gestion interligne
+\setstretch{1.15}               % Interligne légèrement augmenté pour le confort
+
+% --- MISE EN PAGE ---
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=15pt
+}
+\usepackage{parskip}            % Paragraphes séparés par un saut de ligne (style moderne)
+
+% --- GRAPHIQUES ET TABLEAUX ---
+\usepackage{graphicx}
+\usepackage{float}              % Pour le placement H
+\usepackage{booktabs}           % Pour de beaux tableaux
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{pifont}             % Pour les symboles check/cross
+
+% --- COULEURS ET CODE ---
+\usepackage{xcolor}
+\usepackage{listings}
+
+% Définition de la couleur principale (Bleu Roi Professionnel)
+\definecolor{mainblue}{RGB}{0, 51, 102}
+\definecolor{accentblue}{RGB}{0, 102, 204}
+\definecolor{lightgray}{RGB}{245, 245, 245}
+
+% --- LIENS HYPERTEXTES ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=mainblue,     % Liens internes en bleu foncé
+    urlcolor=accentblue,    % URL en bleu plus clair
+    citecolor=mainblue,
+    pdftitle={Analyse Spatio-Statistique des Mobilités},
+    pdfauthor={Imane Belhafiane - Marcel Assie}
+}
+
+% --- EN-TÊTES ET PIEDS DE PAGE ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small \color{gray}\textit{Analyse Spatio-Statistique des Mobilités en Île-de-France}}
+\fancyhead[R]{\small \thepage}
+\fancyfoot[C]{\small \color{gray} ENSG Géomatique | 2025-2026}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{mainblue}\leaders\hrule height \headrulewidth\hfill}}
+
+% --- PERSONNALISATION DES TITRES ---
+\usepackage{titlesec}
+
+% Section : Grand, Bleu, avec une ligne dessous
+\titleformat{\section}
+    {\normalfont\Large\bfseries\color{mainblue}}
+    {\thesection}{0.8em}{}
+    [\vspace{0.3em}\titlerule]
+
+% Subsection : Moyen, Bleu accent
+\titleformat{\subsection}
+    {\normalfont\large\bfseries\color{mainblue}}
+    {\thesubsection}{0.8em}{}
+
+% Subsubsection : Petit, Gris foncé
+\titleformat{\subsubsection}
+    {\normalfont\normalsize\bfseries\color{black!70}}
+    {\thesubsubsection}{0.8em}{}
+
+% Espacement des titres
+\titlespacing*{\section}{0pt}{2em}{1em}
+\titlespacing*{\subsection}{0pt}{1.5em}{0.8em}
+
+% --- CONFIGURATION DES LISTINGS (CODE) ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{lightgray},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,           % Cadre autour du code
+    rulecolor=\color{white} % Couleur du cadre (invisible ici pour juste l'effet background)
+}
+\lstset{style=mystyle}
+
+% --- LÉGENDES ---
+\captionsetup{
+    font={small, stretch=1},
+    labelfont={bf, color=mainblue},
+    justification=centering,
+    singlelinecheck=false,
+    figurename=Figure,
+    tablename=Tableau
+}
+
+% --- LISTES ---
+\usepackage{enumitem}
+\setlist{itemsep=0.3em, topsep=0.5em}
+\setlist[description]{font=\bfseries\color{mainblue}} % Style des descriptions
+
+% --- COMMANDES PERSO ---
+\newcommand{\valid}{\textcolor{green!60!black}{\ding{51}}}
+\newcommand{\cross}{\textcolor{red!60!black}{\ding{55}}}
+
+%===============================================================================
+% DÉBUT DU DOCUMENT
+%===============================================================================
+\begin{document}
+
+% --- PAGE DE TITRE ---
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+
+        % Logos
+        \begin{minipage}{0.45\textwidth}
+            \centering
+            \includegraphics[height=2.5cm]{ensg_logo.png} % Ajuster height si besoin
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.45\textwidth}
+            \centering
+            \includegraphics[height=2.5cm]{uge_logo.jpeg}
+        \end{minipage}
+
+        \vspace{2.5cm}
+
+        % Titre
+        {\Huge \bfseries \color{mainblue} Analyse Spatio-Statistique\\[0.3cm] des Mobilités en Île-de-France\par}
+
+        \vspace{0.8cm}
+        \rule{0.6\textwidth}{1pt} \\[0.8cm] % Ligne décorative
+
+        {\Large Étude des flux domicile-travail\\[0.2cm] et des déterminants du choix modal\par}
+
+        \vspace{2.5cm}
+
+        % Auteurs
+        \begin{minipage}{0.8\textwidth}
+            \centering
+            {\Large \textbf{Imane Belhafiane} \& \textbf{Marcel Assie}}\\[0.5cm]
+            {\large Spécialisation GDS (Geo Data Science)}\\[0.2cm]
+            {\large École Nationale des Sciences Géographiques}
+        \end{minipage}
+
+        \vfill
+
+        % Bas de page
+        {\large Année universitaire 2025-2026}\\[1cm]
+
+        \begin{center}
+            \textit{« Comprendre la mobilité pour mieux aménager le territoire »}
+        \end{center}
+
+        \vspace{1cm}
+    \end{center}
+\end{titlepage}
+
+% --- TABLE DES MATIÈRES ---
+\newpage
+\thispagestyle{plain} % Pas d'en-tête sur la TOC
+{
+  \hypersetup{linkcolor=black} % Liens noirs dans la TOC pour la propreté
+  \tableofcontents
+}
+\newpage
+
+%===============================================================================
+\section{Introduction}
+%===============================================================================
+
+La mobilité quotidienne constitue un enjeu majeur pour les politiques d'aménagement du territoire et de transition écologique. Dans un contexte de croissance urbaine continue et de pressions environnementales croissantes, comprendre les déterminants du choix modal devient essentiel pour concevoir des systèmes de transport efficaces et durables.
+
+Ce projet s'inscrit dans cette problématique en proposant une analyse approfondie des flux de déplacements domicile-travail en Île-de-France sur la période 2017-2022. L'objectif principal consiste à identifier et quantifier les mécanismes qui régissent le choix du mode de transport (voiture, transports en commun, vélo, marche) et à évaluer l'impact des modifications du réseau de transport sur les comportements de mobilité.
+
+\subsection{Problématique centrale}
+
+Notre étude vise à répondre à la question suivante :
+
+\begin{quote}
+    \itshape \color{mainblue}
+    \textbf{« Comment les modifications du réseau de transport influencent-elles le choix du mode de transport pour les déplacements domicile-travail ? »}
+\end{quote}
+
+Cette question se décompose en plusieurs points :
+\begin{itemize}[label=\textbullet]
+    \item Comment la distance structure-t-elle le choix modal ?
+    \item Existe-t-il une compétition directe entre les transports en commun et la voiture individuelle ?
+    \item La congestion et l'augmentation des temps de parcours constituent-elles un levier significatif du report modal ?
+    \item Quelles sont les dynamiques spatiales et temporelles des changements de comportement ?
+\end{itemize}
+
+\subsection{Approche méthodologique}
+
+Notre analyse se fonde sur l'exploitation de matrices origine-destination détaillées, nous offrant une \textbf{connaissance explicite des origines et destinations}. Cette approche permet d'appréhender précisément les flux entre communes et d'analyser la \textit{propension modale} en fonction des caractéristiques réelles des trajets.
+
+Notre approche méthodologique repose sur une chaîne de traitement complète :
+\begin{enumerate}
+    \item La manipulation de données massives issues des recensements INSEE ;
+    \item Le traitement géographique et le calcul de distances entre les communes ;
+    \item L'analyse descriptive des dynamiques de mobilité ;
+    \item La modélisation statistique des relations entre infrastructure et comportement.
+\end{enumerate}
+
+%===============================================================================
+\section{Contexte du sujet}
+%===============================================================================
+
+\subsection{Contexte scientifique et opérationnel}
+
+L'étude des déplacements domicile-travail est un domaine important en géographie des transports. Les travaux de recherche ont permis de mieux comprendre les choix modaux et d'intégrer les dimensions spatiales et temporelles de la mobilité.
+
+En Île-de-France, cette question est particulièrement importante compte tenu :
+\begin{itemize}[label=\textbullet]
+    \item De la densité exceptionnelle du réseau de transport (plus de 1300 km de lignes de métro, RER et tramway) ;
+    \item Des volumes de déplacements quotidiens dépassant 25 millions de trajets ;
+    \item Des enjeux environnementaux majeurs liés à la qualité de l'air et à la réduction des émissions de CO$_2$ ;
+    \item Des politiques publiques volontaristes visant à réduire la part de l'automobile (Grand Paris Express, ZFE, etc.).
+\end{itemize}
+
+\subsection{Données disponibles et périmètre d'étude}
+
+\subsubsection{Sources de données}
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Données de flux (INSEE)} : Recensements détaillés des déplacements domicile-travail par commune et par mode de transport de 2017 à 2022.
+    \item \textbf{Données géographiques (IGN)} : Géométries officielles des communes pour le calcul des centroïdes et des distances.
+\end{itemize}
+
+\subsubsection{Zone d'étude}
+L'analyse couvre l'ensemble de la région Île-de-France (REGION 11), soit environ 1300 communes. Ce périmètre présente l'avantage de :
+\begin{itemize}[label=\textbullet]
+    \item Disposer de données complètes et homogènes ;
+    \item Bénéficier d'un réseau de transport dense et diversifié ;
+    \item Présenter une forte variété de situations urbaines (Paris, petite couronne, grande couronne).
+\end{itemize}
+
+\subsubsection{Modes de transport étudiés}
+Cinq modes principaux sont analysés :
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Marche à pied (MP)} : Déplacements pédestres.
+    \item \textbf{Vélo (VL)} : Modes doux non motorisés.
+    \item \textbf{Deux-roues motorisés (DRM)} : Scooters et motocyclettes.
+    \item \textbf{Voiture, camion, fourgonnette (VT)} : Transport individuel motorisé.
+    \item \textbf{Transports en commun (TC)} : Ensemble des modes collectifs (métro, RER, bus, tram).
+\end{enumerate}
+
+\subsection{Hypothèses de recherche}
+
+Notre étude repose sur trois hypothèses fondamentales :
+
+\begin{description}
+    \item[H1 : Complémentarité distance-mode] La distance constitue le principal facteur structurel du choix modal, avec une domination de la marche sur les très courtes distances, de la voiture sur les distances moyennes et des transports en commun sur les longues distances.
+    \item[H2 : Compétition directe TC-Voiture] Le développement des transports en commun génère un report modal direct depuis l'automobile, sans affecter significativement les modes doux.
+    \item[H3 : Effet significatif de la congestion uniforme] Une augmentation progressive et uniforme des temps de parcours constitue un levier suffisant pour modifier les comportements de mobilité de manière significative.
+\end{description}
+
+%===============================================================================
+\section{Préparation et structuration des données}
+%===============================================================================
+
+Pour rendre les données brutes exploitables, nous avons dû les transformer et les structurer de manière méthodique.
+
+\subsection{Transformation des données de mobilité}
+
+Les données INSEE brutes présentent plusieurs caractéristiques qui nécessitent une préparation :
+
+\subsubsection{Uniformisation des modes de transport}
+
+Un défi important a été l'évolution de la classification des modes de transport entre 2016 et les années suivantes :
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Avant 2017} : Le vélo était regroupé avec les deux-roues motorisés.
+    \item \textbf{À partir de 2017} : Séparation distincte entre vélo et deux-roues motorisés.
+\end{itemize}
+Nous avons résolu ce problème en créant des tables de correspondance adaptées à chaque période, garantissant ainsi la cohérence temporelle de notre analyse.
+
+\subsubsection{Filtrage et agrégation}
+Les données ont été traitées selon plusieurs étapes successives :
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Sélection géographique} : Ne conserver que les flux en Île-de-France.
+    \item \textbf{Codification} : Transformer les codes numériques en noms explicites de modes de transport.
+    \item \textbf{Agrégation} : Regrouper les flux par couple origine-destination et par mode.
+\end{enumerate}
+
+\subsection{Ajout de la dimension spatiale}
+
+Pour analyser les aspects géographiques, nous avons intégré les données de localisation :
+
+\subsubsection{Calcul des distances}
+Nous avons calculé les distances entre les communes en utilisant leurs centroïdes géographiques. Cette approche permet d'obtenir des mesures précises qui tiennent compte de la forme réelle du territoire.
+
+\subsubsection{Jointure avec les géométries}
+Les données de flux ont été connectées aux contours géographiques des communes, ce qui nous permet de réaliser des cartes et des analyses spatiales.
+
+\subsection{Structuration finale des données}
+
+Le processus de préparation a généré deux ensembles de données complémentaires :
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Données descriptives} : Format détaillé année par année, contenant les flux bruts par mode et les distances, permettant de suivre l'évolution temporelle.
+    \item \textbf{Données analytiques} : Format des variations entre années consécutives, contenant les changements de parts modales et de durées, conçu pour les analyses statistiques et les corrélations.
+\end{itemize}
+
+Cette double structuration nous permet d'étudier à la fois les situations existantes et les dynamiques d'évolution de la mobilité.
+
+%===============================================================================
+\section{Analyse descriptive}
+%===============================================================================
+
+L'analyse descriptive révèle les structures fondamentales de la mobilité en Île-de-France à travers l'examen des évolutions temporelles, des flux majeurs et des patterns spatiaux.
+
+\subsection{Évolution temporelle des parts modales (2017-2022)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../data/output/description/1_evolution_volume_lignes.png}
+    \caption{Évolution des volumes de déplacements par mode de transport 2017-2022}
+    \label{fig:evolution_volumes}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../data/output/description/2_parts_modales.png}
+    \caption{Évolution des parts modales relatives 2017-2022}
+    \label{fig:parts_modales}
+\end{figure}
+
+\subsubsection{Tendances observées}
+
+L'analyse des graphiques \ref{fig:evolution_volumes} et \ref{fig:parts_modales} montre des dynamiques contrastées :
+
+\begin{description}
+    \item[Transports en commun (TC)] Progression remarquable avec une augmentation de 3.9 points de pourcentage, passant de 38.2\% à 42.1\% du total des déplacements. Cette croissance reflète l'impact des investissements dans le réseau (Grand Paris Express, modernisation du RER).
+    \item[Voiture (VT)] Relative stabilité autour de 45-47\% malgré une légère tendance à la baisse sur la fin de période. La voiture reste le mode dominant mais subit la concurrence directe des TC.
+    \item[Modes doux] Croissance modérée mais continue. Le vélo progresse de manière significative (+0.8 points), tandis que la marche maintient une part stable autour de 12-13\%.
+    \item[Deux-roues motorisés] Part marginale (environ 1\%) mais en légère progression, reflétant l'adaptation aux contraintes de circulation urbaine.
+\end{description}
+
+\subsection{Analyse des flux majeurs}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../data/output/description/3_top_flux.png}
+    \caption{Les 15 principaux flux de déplacements domicile-travail}
+    \label{fig:top_flux}
+\end{figure}
+
+\subsubsection{Structure hiérarchique des flux}
+
+Le graphique \ref{fig:top_flux} illustre la forte concentration spatiale des déplacements :
+
+\begin{description}
+    \item[Domination parisienne] Les flux impliquant Paris comme origine ou destination représentent plus de 60\% des déplacements totaux, confirmant le modèle monocentrique de l'agglomération.
+    \item[Axes radiaux structurants] Les relations Paris-banlieue (Nord, Sud, Est, Ouest) concentrent l'essentiel des volumes, avec des pics marqués pour les pôles d'emploi majeurs (La Défense, Saint-Denis, Versailles).
+    \item[Poids des relations intra-départementales] Les flux au sein des départements de petite couronne complètent cette structure radiale, témoignant d'une polycentralisation émergente.
+\end{description}
+
+\subsection{Cartographie de l'attractivité territoriale}
+
+\subsubsection{Attractivité globale tous modes confondus}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../data/output/description/carte_attractivite_tous les modes.png}
+    \caption{Solde net d'attractivité tous modes confondus}
+    \label{fig:attractivite_global}
+\end{figure}
+
+La carte \ref{fig:attractivite_global} révèle une structure spatiale fortement hiérarchisée :
+
+\begin{description}
+    \item[Pôle central parisien] Solde net massivement positif, confirmant Paris comme principal pôle d'emploi et d'attractivité.
+    \item[Pôles secondaires] La Défense, Saint-Denis, Boulogne-Billancourt et Versailles présentent des soldes positifs significatifs, formant une couronne de pôles d'emploi secondaires.
+    \item[Zones-dortoirs] Les communes de grande couronne présentent des soldes négatifs marqués, illustrant leur fonction résidentielle dominante.
+\end{description}
+
+\subsubsection{Spécialisations modales}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{../data/output/description/carte_attractivite_Transports en Commun.png}
+        \caption{Attractivité TC}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{../data/output/description/carte_attractivite_Voiture.png}
+        \caption{Attractivité Voiture}
+    \end{subfigure}
+    \caption{Comparaison des attractivités TC et Voiture}
+    \label{fig:attractivite_tc_voiture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{../data/output/description/carte_attractivite_Marche.png}
+        \caption{Attractivité Marche}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{../data/output/description/carte_attractivite_Vélo.png}
+        \caption{Attractivité Vélo}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{../data/output/description/carte_attractivite_Moto-Scooter.png}
+        \caption{Attractivité 2-roues}
+    \end{subfigure}
+    \caption{Attractivité des modes doux et deux-roues motorisés}
+    \label{fig:attractivite_doux}
+\end{figure}
+
+L'analyse des cartes \ref{fig:attractivite_tc_voiture} et \ref{fig:attractivite_doux} met en évidence des spécialisations territoriales marquées :
+
+\begin{description}
+    \item[Transports en commun] Forte attractivité des pôles bien desservis (Paris centre, La Défense, stations RER majeures). Les zones de grande couronne présentent des soldes très négatifs, illustrant la dépendance automobile.
+    \item[Voiture] Pattern spatial inverse avec une attractivité diffuse en grande couronne et des soldes négatifs dans les zones denses où l'automobile est pénalisée.
+    \item[Marche et Vélo] Attractivité concentrée dans les zones denses et centrales (Paris intra-muros, communes limitrophes), confirmant l'importance de la distance pour ces modes.
+    \item[Deux-roues motorisés] Pattern intermédiaire avec une attractivité modérée dans les zones de densité moyenne où ils constituent une alternative efficace.
+\end{description}
+
+\subsection{Statistiques descriptives des variations}
+
+\begin{table}[H]
+    \centering
+    \caption{Statistiques descriptives des variations inter-annuelles}
+    \label{tab:stats_variations}
+    \begin{tabular}{lrrrrrr}
+    \toprule
+    \textbf{Variable} & \textbf{Moy.} & \textbf{Écart-type} & \textbf{Min} & \textbf{Q1} & \textbf{Médiane} & \textbf{Q3} \\
+    \midrule
+    Variation durée (min) & 0.60 & 3.48 & -35.88 & -0.96 & 0.37 & 2.04 \\
+    Variation TC (\%) & 0.11 & 13.84 & -100.00 & 0.00 & 0.00 & 0.00 \\
+    Variation Voiture (\%) & -0.21 & 14.30 & -100.00 & 0.00 & 0.00 & 0.00 \\
+    Variation Marche (\%) & 0.03 & 2.12 & -100.00 & 0.00 & 0.00 & 0.00 \\
+    Variation Vélo (\%) & 0.11 & 2.54 & -100.00 & 0.00 & 0.00 & 0.00 \\
+    Variation 2-roues (\%) & -0.03 & 5.06 & -100.00 & 0.00 & 0.00 & 0.00 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+Le tableau \ref{tab:stats_variations} montre que les variations annuelles sont en moyenne faibles mais avec une forte dispersion, indiquant une grande hétérogénéité des comportements de mobilité.
+
+\subsection{Synthèse descriptive}
+
+L'analyse descriptive révèle une mobilité francilienne structurée par trois principes fondamentaux :
+
+\begin{description}
+    \item[Principe de centralité] Paris et ses pôles secondaires concentrent l'essentiel des flux d'emploi, générant des mouvements pendulaires radiaux massifs.
+    \item[Principe de complémentarité distance-mode] Chaque mode occupe une niche distance spécifique, créant une partition fonctionnelle de l'espace selon les distances de déplacement.
+    \item[Principe de spécialisation territoriale] Les territoires se différencient selon leur dominante modale, reflétant l'interaction entre densité urbaine, offre de transport et caractéristiques socio-économiques.
+\end{description}
+
+%===============================================================================
+\section{Analyse statistique}
+%===============================================================================
+
+L'analyse statistique vise à quantifier les relations entre les variables et à tester nos hypothèses de recherche de manière rigoureuse. Elle révèle des mécanismes fondamentaux du choix modal.
+
+\subsection{Test de l'hypothèse de la congestion}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../data/output/final_results/3_regression_duree_stats.png}
+    \caption{Régressions entre variation de durée et variations des parts modales}
+    \label{fig:regression_duree}
+\end{figure}
+
+\subsubsection{Résultats des régressions durée vs parts modales}
+
+L'analyse du graphique \ref{fig:regression_duree} et des coefficients de régression révèle une absence totale de relation statistique :
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Tous les $R^2 < 0.001$} : Coefficients de détermination quasi nuls.
+    \item \textbf{p-values > 0.05} : Aucune relation statistiquement significative.
+    \item \textbf{Pentes proches de zéro} : Impact négligeable de la variation de durée.
+\end{itemize}
+
+\begin{quote}
+    \textbf{Interprétation fondamentale :} Contrairement à notre hypothèse H3, la congestion simulée de manière uniforme ne constitue pas un levier significatif du changement de comportement. Les usagers ne modifient pas leur mode de transport face à une dégradation progressive et homogène des temps de parcours. \textbf{L'hypothèse H3 est donc invalidée par les données empiriques.}
+\end{quote}
+
+\subsection{Test de la compétition TC-Voiture}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../data/output/final_results/3_regression_competition_tc_stats.png}
+    \caption{Régressions de compétition entre TC et autres modes}
+    \label{fig:competition_tc}
+\end{figure}
+
+\subsubsection{Résultat spectaculaire : TC vs Voiture}
+
+Le graphique \ref{fig:competition_tc} met en évidence une relation exceptionnelle entre transports en commun et voiture :
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{$R^2 = 0.827$} : 82.7\% de la variance expliquée.
+    \item \textbf{p-value < 0.001} : Significativité statistique extrême.
+    \item \textbf{Pente = -0.940} : Taux de conversion quasi-unitaire.
+\end{itemize}
+
+\begin{quote}
+    \textbf{Interprétation majeure :} Pour chaque gain de 1\% des transports en commun, la voiture perd 0.94\%. Le report modal est quasi-direct et exclusif, démontrant une compétition frontale entre ces deux modes.
+\end{quote}
+
+\subsubsection{Absence de compétition avec les modes doux}
+
+Contrairement à la relation TC-Voiture, les régressions TC vs modes doux montrent :
+\begin{itemize}[label=\textbullet]
+    \item \textbf{TC vs Vélo} : $R^2 = 0.002$, p > 0.05
+    \item \textbf{TC vs Marche} : $R^2 = 0.003$, p > 0.05
+    \item \textbf{TC vs 2-roues} : $R^2 = 0.001$, p > 0.05
+\end{itemize}
+
+Les transports en commun ne concurrencent pas directement les modes doux, confirmant leur complémentarité plutôt que leur substitution.
+
+\subsection{Structure distance-mode}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../data/output/final_results/5_structure_distance_mode.png}
+    \caption{Relations structurelles entre distance et parts modales}
+    \label{fig:structure_distance}
+\end{figure}
+
+\subsubsection{Validation du modèle théorique}
+
+L'analyse du graphique \ref{fig:structure_distance} révèle des dynamiques contrastées selon les modes, remettant partiellement en cause les modèles de proximité classiques pour les modes actifs :
+
+\begin{description}
+    \item[Transports en commun] Présentent une \textbf{croissance linéaire robuste} avec la distance. C'est le seul mode dont la part de marché progresse de manière constante, confirmant son rôle structurel pour la mobilité régionale à longue distance.
+    \item[Voiture] Affiche une \textbf{décroissance continue}. Contrairement au modèle en cloche, la voiture est massivement utilisée dès les courtes distances mais perd sa dominance au profit des TC au-delà de 40-50 km, là où le réseau ferré devient plus compétitif.
+    \item[Marche et Vélo] Bien que concentrés sur les flux de proximité (haute densité de points entre 0 et 10 km), les modèles de régression montrent une stagnation à bas niveau sur le reste du spectre. Les distances moyennes observées (autour de 10 km) suggèrent que ces modes ne sont plus cantonnés à l'hyper-proximité dans les déclarations de flux domicile-travail.
+\end{description}
+
+\subsubsection{Distances caractéristiques par mode}
+
+\begin{table}[H]
+    \centering
+    \caption{Distances moyennes de pratique par mode (valeurs observées)}
+    \label{tab:distances_moyennes}
+    \begin{tabular}{lr}
+    \toprule
+    \textbf{Mode} & \textbf{Distance moyenne (km)} \\
+    \midrule
+    Transports en commun & 21.8 \\
+    Voiture               & 18.2 \\
+    Marche                & 11.3 \\
+    Vélo                  & 9.6 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+Ces résultats (tableau \ref{tab:distances_moyennes}) confirment que les \textbf{Transports en Commun} sont le mode de la longue distance par excellence en Île-de-France, tandis que la \textbf{Voiture} reste ancrée sur des déplacements plus courts mais subit une érosion de sa part de marché face à l'allongement des trajets.
+
+\subsection{Synthèse des résultats statistiques}
+
+\subsubsection{Validation des hypothèses de recherche}
+
+\begin{table}[H]
+    \centering
+    \caption{Synthèse de la validation des hypothèses}
+    \label{tab:synthese_hypotheses}
+    \begin{tabular}{p{0.6\textwidth} c}
+    \toprule
+    \textbf{Hypothèse} & \textbf{Validation} \\
+    \midrule
+    H1 : Complémentarité distance-mode & \valid Fortement validée \\
+    H2 : Compétition TC-Voiture & \valid Spectaculairement validée \\
+    H3 : Effet significatif de la congestion & \cross Invalidée \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{description}
+    \item[H1 (Complémentarité distance-mode)] : \valid \textbf{Fortement validée}\\L'analyse structurelle confirme une partition fonctionnelle de l'espace selon les distances, avec des niches modales clairement définies.
+    \item[H2 (Compétition TC-Voiture)] : \valid \textbf{Spectaculairement validée}\\La relation quasi-parfaite ($R^2 = 0.827$) avec un taux de conversion de 0.94 démontre une compétition directe et exclusive.
+    \item[H3 (Effet significatif de la congestion)] : \cross \textbf{Invalidée}\\Contrairement à notre hypothèse initiale, les résultats montrent une absence totale de relation entre variation uniforme de durée et changements modaux ($R^2 < 0.001$). La congestion uniforme ne constitue donc pas un levier suffisant pour modifier les comportements.
+\end{description}
+
+\subsubsection{Implications pour les politiques publiques}
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Priorité absolue aux investissements TC} : Le taux de conversion de 0.94 justifie économiquement les investissements massifs dans les transports en commun.
+    \item \textbf{Limites des politiques répressives} : Les seules mesures de congestion sans amélioration de l'offre alternative auront un impact marginal.
+    \item \textbf{Approche territorialisée} : Les patterns spatiaux appellent des stratégies différenciées selon les contextes locaux et les distances de déplacement.
+\end{itemize}
+
+%===============================================================================
+\section{Conclusion}
+%===============================================================================
+
+Ce projet d'analyse spatio-statistique des mobilités en Île-de-France a permis de développer une compréhension fine des mécanismes régissant le choix modal et de quantifier les relations entre infrastructure de transport et comportements de déplacement.
+
+\subsection{Principaux résultats}
+
+Notre démarche a mis en évidence plusieurs résultats fondamentaux illustrés par les figures présentées :
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Structuration distance-mode cohérente}\\
+    L'analyse des relations entre distance et parts modales (figure \ref{fig:structure_distance}) confirme les modèles théoriques de la mobilité urbaine, avec une répartition fonctionnelle des modes selon les distances de déplacement.
+
+    \item \textbf{Compétition directe TC-Voiture}\\
+    Le résultat le plus spectaculaire réside dans la relation quasi-parfaite entre transports en commun et automobile ($R^2 = 0.827$, figure \ref{fig:competition_tc}), démontrant un taux de conversion de 0.94.
+
+    \item \textbf{Efficacité limitée des politiques de congestion}\\
+    Contrairement à notre hypothèse H3, l'absence de relation significative entre variation uniforme de durée et changements modaux démontre que la congestion seule ne constitue pas un levier suffisant pour modifier les comportements.
+\end{enumerate}
+
+\subsection{Contributions méthodologiques}
+
+Au-delà des résultats spécifiques, notre projet contribue sur le plan méthodologique :
+\begin{itemize}[label=\textbullet]
+    \item Développement d'une chaîne de traitement complète intégrant données massives, géomatique et statistique.
+    \item Combinaison d'analyses descriptives, statistiques et spatiales dans un cadre cohérent.
+\end{itemize}
+
+\subsection{Implications pour les politiques publiques}
+
+Nos résultats ont des implications directes pour l'aménagement du territoire :
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Priorité absolue aux investissements TC} : Le taux de conversion de 0.94 justifie économiquement les investissements.
+    \item \textbf{Approche territorialisée} : Les patterns spatiaux appellent des stratégies différenciées selon les contextes locaux.
+    \item \textbf{Limites des approches répressives} : Les seules politiques de congestion sans amélioration de l'offre alternative ont une efficacité limitée.
+\end{itemize}
+
+\subsection{Perspectives de recherche}
+
+Plusieurs pistes de développement pourraient enrichir cette analyse :
+\begin{itemize}[label=\textbullet]
+    \item Intégration de variables socio-économiques pour affiner la compréhension des mécanismes de choix.
+    \item Utilisation de modèles plus sophistiqués (régressions logistiques, modèles de panel).
+    \item Extension à d'autres territoires pour tester la généralisabilité des résultats.
+    \item Intégration des données temps réel pour capturer la dynamique fine de la congestion.
+\end{itemize}
+
+\vspace{1.5cm}
+
+\begin{center}
+    \begin{minipage}{0.8\textwidth}
+        \centering
+        \hrule
+        \vspace{0.3cm}
+        \textit{\small Cette étude démontre que l'analyse spatio-statistique des mobilités, lorsqu'elle combine rigueur méthodologique et pertinence opérationnelle, constitue un outil puissant pour l'éclairage des politiques d'aménagement et de transport.}
+        \vspace{0.3cm}
+        \hrule
+    \end{minipage}
+\end{center}
+
+\end{document}
