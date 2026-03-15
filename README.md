@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
 ![Status](https://img.shields.io/badge/Status-Achevé-success?style=flat-square)
 ![Domain](https://img.shields.io/badge/Ecole-Geodata_Paris-orange?style=flat-square)
-![Domain](https://img.shields.io/badge/Domaine-Geo_Data_Science-violet?style=flat-square)
+![Domain](https://img.shields.io/badge/Spécialisation-Geo_Data_Science-violet?style=flat-square)
 
 
 Ce projet propose une analyse approfondie des flux de déplacements domicile-travail au sein de la région Île-de-France sur une période de six ans. L'étude combine des approches de science de données et d'analyse spatiale pour quantifier les déterminants du choix modal et évaluer la dynamique de compétition entre les infrastructures de transport.
@@ -27,7 +27,6 @@ Le projet repose sur l'exploitation de deux sources de données majeures :
 *   **INSEE (Fichiers Détail MOBPRO)** : Recensements annuels des déplacements domicile-travail de 2017 à 2022.
 *   **IGN (ADMIN-EXPRESS)** : Géométries officielles des communes françaises pour les calculs de distances et les représentations cartographiques.
 
-### Gestion des volumes de données
 Conformément aux bonnes pratiques de versionnage, les fichiers suivants n'ont pas été intégrés au dépôt Git en raison de leur taille importante :
 *   Les couches géographiques brutes de l'IGN (`COMMUNE.*`).
 *   Le fichier de travail GeoPackage (`COMMUNE_COMMUNS_DCLT.gpkg`).
@@ -94,5 +93,4 @@ pdflatex rapport_complet.tex
 *   **Imane Belhafiane** - École Nationale des Sciences Géographiques (ENSG)
 *   **Marcel Assie** - École Nationale des Sciences Géographiques (ENSG)
 
-**Spécialisation :** Geo Data Science (GDS)  
 **Année universitaire :** 2025-2026
