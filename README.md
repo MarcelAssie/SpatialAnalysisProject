@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
 ![Status](https://img.shields.io/badge/Status-Achevé-success?style=flat-square)
-![Domain](https://img.shields.io/badge/Ecole-Geodata_Paris-orange?style=flat-square)
+![Domain](https://img.shields.io/badge/École-École_Nationale_des_Sciences_Géographiques-orange?style=flat-square)
 ![Domain](https://img.shields.io/badge/Spécialisation-Geo_Data_Science-violet?style=flat-square)
 
 
