@@ -81,7 +81,7 @@ class SpatialStatisticalAnalysis:
         return data
 
     def join_communes_geoms(self, data):
-        self.logger.info("Jointure géométrique et calcul des distances...")
+        self.logger.info("Calcul des distances géodésiques...")
 
         communes_geoms = self.ign_com_geoms.copy()
         valid_geoms_mask = (communes_geoms['geometry'].notna()) & (communes_geoms['geom_dclt'].notna())
@@ -131,6 +131,7 @@ class SpatialStatisticalAnalysis:
 
             df['DUREE'] = theoretical_duration * congestion_factor * random_noise
             processed_dfs[year] = df
+            self.logger.info(f"Simulation de {year} terminée")
 
         return processed_dfs
 
@@ -164,7 +165,7 @@ class SpatialStatisticalAnalysis:
 
         self.analytic_data = df_an.dropna(subset=['DELTA_DUREE'])
 
-        path = f"{self.output_folder}/global_data"
+        path = f"{self.output_folder}/descriptive_analytic_data"
         os.makedirs(path, exist_ok=True)
         self.descriptive_data.to_csv(f"{path}/descriptive_data.csv")
         self.analytic_data.to_csv(f"{path}/analytic_data.csv")
@@ -178,6 +179,6 @@ class SpatialStatisticalAnalysis:
             descriptive_data=self.descriptive_data,
             ign_communes=self.ign_communes,
             logger=self.logger,
-            output_folder=f"{self.output_folder}/final_results"
+            output_folder=f"{self.output_folder}/correlation_analysis"
         )
         analysis.run_full_analysis()
