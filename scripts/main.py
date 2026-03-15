@@ -22,6 +22,7 @@ class SpatialStatisticalAnalysis:
 
     @staticmethod
     def _setup_logger():
+
         logger = logging.getLogger("Spatial Analysis")
         logger.setLevel(logging.INFO)
         if not logger.handlers:

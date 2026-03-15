@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
@@ -15,7 +16,7 @@ class GlobalAnalysis:
                  ign_communes: gpd.GeoDataFrame,
                  logger: logging.Logger,
                  output_folder: str = "output/analysis",
-                 sample_size: int = 1000):
+                 sample_size: int = 500):
 
         self.analytic_data = analytic_data
         self.descriptive_data = descriptive_data
@@ -178,29 +179,32 @@ class GlobalAnalysis:
 
         for idx, (col, title, color) in enumerate(zip(modes, titles, colors)):
             ax = axes[idx]
-            
+
             # Sous-échantillonnage pour améliorer la lisibilité
             data_plot = self._subsample_data(df_latest)
-            
+
             sns.regplot(x='DISTANCE', y=col, data=data_plot, ax=ax,
                         scatter_kws={'alpha': 0.1, 's': 10, 'color': 'gray'},
-                        line_kws={'color': color, 'linewidth': 3}, order=2, ci=95)
+                        line_kws={'color': color, 'linewidth': 3},
+                        logistic=True,
+                        ci=None)  #
 
             ax.set_title(title, fontsize=16, fontweight='bold', color=color)
             ax.set_xlabel("Distance (km)")
             ax.set_ylabel("Part de Marché (%)" if idx == 0 else "")
+
             ax.set_ylim(-0.05, 1.05)
             ax.grid(True, linestyle='--', alpha=0.5)
 
-            avg_dist = (df_latest['DISTANCE'] * df_latest[col]).sum() / df_latest[col].sum()
-            ax.text(0.5, 0.9, f"Dist. Moyenne: {avg_dist:.1f} km",
-                    transform=ax.transAxes, ha='center',
-                    bbox=dict(facecolor='white', edgecolor=color, boxstyle='round'))
-
+            sum_col = df_latest[col].sum()
+            if sum_col > 0:
+                avg_dist = (df_latest['DISTANCE'] * df_latest[col]).sum() / sum_col
+                ax.text(0.5, 0.9, f"Dist. Moyenne: {avg_dist:.1f} km",
+                        transform=ax.transAxes, ha='center',
+                        bbox=dict(facecolor='white', edgecolor=color, boxstyle='round', alpha=0.8))
         plt.tight_layout()
         plt.savefig(f"{self.output_folder}/5_structure_distance_mode.png", dpi=300)
         plt.close()
-
 
     def run_full_analysis(self):
         self.logger.info("DÉMARRAGE DU PIPELINE D'ANALYSE...")
@@ -209,7 +213,7 @@ class GlobalAnalysis:
             self.descriptive_statistics()
             self.analyze_correlations()
             self.analyze_distance_impact()
-            self.logger.info(f"Analyse terminée : {self.output_folder}")
+            self.logger.info(f"Analyse terminée : {Path(self.output_folder)}")
         except Exception as e:
             self.logger.error(f"Erreur d'analyse : {e}")
             import traceback

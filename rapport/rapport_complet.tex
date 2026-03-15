@@ -6,7 +6,10 @@
 \usepackage[french]{babel}
 
 % --- POLICES ET TYPOGRAPHIE ---
-\usepackage{mathpazo}           % Police Palatino (élégante et pro)
+%\usepackage{mathpazo}
+
+\usepackage{lmodern}
+% Police Palatino (élégante et pro)
 \usepackage[scaled=0.95]{helvet}% Helvetica pour les sans-serif
 \usepackage{courier}            % Courier pour le code
 \usepackage[protrusion=true,expansion=true]{microtype} % Micro-ajustements (rendu très propre)
@@ -21,7 +24,7 @@
     bottom=2.5cm,
     left=2.5cm,
     right=2.5cm,
-    headheight=15pt
+    headheight=23pt
 }
 \usepackage{parskip}            % Paragraphes séparés par un saut de ligne (style moderne)
 
@@ -34,6 +37,8 @@
 \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{pifont}             % Pour les symboles check/cross
+\usepackage{amsmath}
+
 
 % --- COULEURS ET CODE ---
 \usepackage{xcolor}
@@ -381,11 +386,21 @@ L'analyse des graphiques \ref{fig:evolution_volumes} et \ref{fig:parts_modales} 
 
 Le graphique \ref{fig:top_flux} illustre la forte concentration spatiale des déplacements :
 
+
+Le graphique \ref{fig:top_flux} illustre la forte concentration spatiale des déplacements :
+
 \begin{description}
-    \item[Domination parisienne] Les flux impliquant Paris comme origine ou destination représentent plus de 60\% des déplacements totaux, confirmant le modèle monocentrique de l'agglomération.
-    \item[Axes radiaux structurants] Les relations Paris-banlieue (Nord, Sud, Est, Ouest) concentrent l'essentiel des volumes, avec des pics marqués pour les pôles d'emploi majeurs (La Défense, Saint-Denis, Versailles).
-    \item[Poids des relations intra-départementales] Les flux au sein des départements de petite couronne complètent cette structure radiale, témoignant d'une polycentralisation émergente.
+
+\item[Domination parisienne] Les flux impliquant Paris comme \textbf{origine} représentent plus de 60% des déplacements totaux. Cela confirme le modèle monocentrique de l’agglomération, mais avec une dynamique spécifique : Paris agit comme un réservoir de main-d'œuvre massif pour le reste de la région.
+
+\item[Axes radiaux structurants] Les relations Paris-banlieue (Nord, Sud, Est, Ouest) concentrent l’essentiel des volumes, avec des pics marqués pour les pôles d’emploi majeurs situés en périphérie (La Défense, Saint-Denis, Versailles).
+
+\item[Poids des relations intra-départementales] Les flux au sein des départements de petite couronne complètent cette structure radiale, témoignant d’une polycentralisation émergente.
+
 \end{description}
+
+
+
 
 \subsection{Cartographie de l'attractivité territoriale}
 
@@ -398,13 +413,19 @@ Le graphique \ref{fig:top_flux} illustre la forte concentration spatiale des dé
     \label{fig:attractivite_global}
 \end{figure}
 
+
 La carte \ref{fig:attractivite_global} révèle une structure spatiale fortement hiérarchisée :
 
 \begin{description}
-    \item[Pôle central parisien] Solde net massivement positif, confirmant Paris comme principal pôle d'emploi et d'attractivité.
-    \item[Pôles secondaires] La Défense, Saint-Denis, Boulogne-Billancourt et Versailles présentent des soldes positifs significatifs, formant une couronne de pôles d'emploi secondaires.
-    \item[Zones-dortoirs] Les communes de grande couronne présentent des soldes négatifs marqués, illustrant leur fonction résidentielle dominante.
+
+\item[Pôle central parisien] Solde net \textbf{massivement négatif}. Contrairement aux idées reçues, Paris présente un déficit d'attractivité dans les flux domicile-travail, illustrant sa fonction résidentielle dominante pour les actifs travaillant en banlieue.
+
+\item[Pôles secondaires] La Défense, Saint-Denis, Boulogne-Billancourt et Versailles présentent des soldes positifs significatifs, formant une couronne de pôles d’emploi qui captent les flux sortants de la capitale.
+
 \end{description}
+
+
+
 
 \subsubsection{Spécialisations modales}
 
@@ -443,14 +464,23 @@ La carte \ref{fig:attractivite_global} révèle une structure spatiale fortement
     \label{fig:attractivite_doux}
 \end{figure}
 
-L'analyse des cartes \ref{fig:attractivite_tc_voiture} et \ref{fig:attractivite_doux} met en évidence des spécialisations territoriales marquées :
+
+L’analyse des cartes \ref{fig:attractivite_tc_voiture} et \ref{fig:attractivite_doux} met en évidence des spécialisations territoriales marquées :
 
 \begin{description}
-    \item[Transports en commun] Forte attractivité des pôles bien desservis (Paris centre, La Défense, stations RER majeures). Les zones de grande couronne présentent des soldes très négatifs, illustrant la dépendance automobile.
-    \item[Voiture] Pattern spatial inverse avec une attractivité diffuse en grande couronne et des soldes négatifs dans les zones denses où l'automobile est pénalisée.
-    \item[Marche et Vélo] Attractivité concentrée dans les zones denses et centrales (Paris intra-muros, communes limitrophes), confirmant l'importance de la distance pour ces modes.
-    \item[Deux-roues motorisés] Pattern intermédiaire avec une attractivité modérée dans les zones de densité moyenne où ils constituent une alternative efficace.
+
+\item[Transports en commun] Forte attractivité des pôles bien desservis (Paris centre, La Défense, stations RER majeures). Les zones de grande couronne présentent des soldes très négatifs, illustrant la dépendance automobile.
+
+\item[Voiture] Pattern spatial inverse avec une attractivité diffuse en grande couronne et des soldes négatifs dans les zones denses où l’automobile est pénalisée, mais \textbf{positifs dans les zones moyennement denses}.
+
+\item[Marche et Vélo] Attractivité concentrée dans les zones denses et centrales (Paris intra-muros, communes limitrophes), confirmant l’importance de la distance pour ces modes.
+
+\item[Deux-roues motorisés] Pattern intermédiaire avec une attractivité modérée dans les zones de densité moyenne où ils constituent une alternative efficace.
+
 \end{description}
+
+
+
 
 \subsection{Statistiques descriptives des variations}
 
@@ -476,13 +506,34 @@ Le tableau \ref{tab:stats_variations} montre que les variations annuelles sont e
 
 \subsection{Synthèse descriptive}
 
-L'analyse descriptive révèle une mobilité francilienne structurée par trois principes fondamentaux :
+
+
+L’analyse descriptive révèle une mobilité francilienne structurée par trois principes fondamentaux :
 
 \begin{description}
-    \item[Principe de centralité] Paris et ses pôles secondaires concentrent l'essentiel des flux d'emploi, générant des mouvements pendulaires radiaux massifs.
-    \item[Principe de complémentarité distance-mode] Chaque mode occupe une niche distance spécifique, créant une partition fonctionnelle de l'espace selon les distances de déplacement.
-    \item[Principe de spécialisation territoriale] Les territoires se différencient selon leur dominante modale, reflétant l'interaction entre densité urbaine, offre de transport et caractéristiques socio-économiques.
+
+\item[Principe de centralité] Paris et les pôles attractifs concentrent l’essentiel des flux, générant des mouvements pendulaires radiaux massifs.
+
+\item[Principe de complémentarité distance-mode] Chaque mode occupe une niche distance spécifique, créant une partition fonctionnelle de l'espace selon les distances de déplacement.
+
+\item[Principe de spécialisation territoriale] Les territoires se différencient selon leur dominante modale, reflétant l’interaction entre densité urbaine, offre de transport et caractéristiques socio-économiques.
+
 \end{description}
+
+
+\begin{center}
+
+\textit{\textbf{Remarque :} Nous avons vérifié dans les données sources (INSEE) et nous avons constaté que les flux massifs sortent de Paris et non pas l'inverse.}
+
+\end{center}
+
+
+
+
+
+
+
+
 
 %===============================================================================
 \section{Analyse statistique}
@@ -490,11 +541,17 @@ L'analyse descriptive révèle une mobilité francilienne structurée par trois 
 
 L'analyse statistique vise à quantifier les relations entre les variables et à tester nos hypothèses de recherche de manière rigoureuse. Elle révèle des mécanismes fondamentaux du choix modal.
 
+
+\begin{center}
+    \textit{\textbf{Remarque :}  Afin d'assurer la lisibilité des graphiques de corrélation et d'éviter la saturation visuelle due à la masse importante des données source, un sous-échantillonnage aléatoire représentatif a été effectué pour l'ensemble des visualisations présentées dans cette section.}
+\end{center}
+
+
 \subsection{Test de l'hypothèse de la congestion}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{../data/output/final_results/3_regression_duree_stats.png}
+    \includegraphics[width=0.85\textwidth]{../data/output/correlation_analysis/3_regression_duree_stats.png}
     \caption{Régressions entre variation de durée et variations des parts modales}
     \label{fig:regression_duree}
 \end{figure}
@@ -513,64 +570,99 @@ L'analyse du graphique \ref{fig:regression_duree} et des coefficients de régres
     \textbf{Interprétation fondamentale :} Contrairement à notre hypothèse H3, la congestion simulée de manière uniforme ne constitue pas un levier significatif du changement de comportement. Les usagers ne modifient pas leur mode de transport face à une dégradation progressive et homogène des temps de parcours. \textbf{L'hypothèse H3 est donc invalidée par les données empiriques.}
 \end{quote}
 
-\subsection{Test de la compétition TC-Voiture}
+%===============================================================================
+\subsection{Test de la compétition TC-Voiture et impact de la congestion}
+%===============================================================================
+
+Cette section analyse la dynamique de compétition entre les modes de transport et évalue si la dégradation simulée des conditions de circulation influe sur le report modal au sein de la région Île-de-France.
+
+\subsubsection{Méthodologie : Simulation de la durée et de la congestion}
+
+Afin d'étudier l'impact du temps de parcours sur les choix de mobilité, une variable « Durée » a été simulée pour chaque flux origine-destination. Cette approche permet de pallier l'absence de données de temps de parcours historiques en temps réel tout en testant l'élasticité des comportements. La simulation repose sur le modèle suivant :
+
+\begin{equation}
+    Duree = \left( \frac{Distance}{V_{moy}} \times 60 \right) \times (1 + \Delta_{an} \times \text{taux}) \times \epsilon
+\end{equation}
+
+Où :
+\begin{itemize}[label=\textbullet]
+    \item \textbf{$V_{moy}$} : Une vitesse théorique de base fixée à \textbf{30 km/h}, représentative d'une circulation urbaine et périurbaine moyenne.
+    \item \textbf{$\Delta_{an} \times \text{taux}$} : Une augmentation progressive de la congestion de \textbf{1,5\% par an} (soit 0,015) à partir de l'année de référence, simulant une saturation croissante du réseau routier.
+    \item \textbf{$\epsilon$ (Bruit)} : Un bruit blanc gaussien ($\mu=1, \sigma=0,05$) injecté pour simuler l'aléa réel des conditions de trajet (incidents, météo) et éviter un modèle purement déterministe.
+\end{itemize}
+
+Cette simulation permet d'évaluer si l'allongement mécanique des temps de trajet constitue un levier de report modal significatif.
+
+\subsubsection{Résultat : La compétition frontale TC vs Voiture}
+
+L'analyse des corrélations (Figure \ref{fig:competition_tc}) met en évidence une relation exceptionnelle entre l'évolution des parts de marché des transports en commun (TC) et celle de la voiture individuelle (VT) :
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{../data/output/final_results/3_regression_competition_tc_stats.png}
-    \caption{Régressions de compétition entre TC et autres modes}
+    \includegraphics[width=1\textwidth]{../data/output/correlation_analysis/3_regression_competition_tc_stats.png}
+    \caption{Régressions de compétition entre TC et autres modes (Marche, Vélo, Voiture)}
     \label{fig:competition_tc}
 \end{figure}
 
-\subsubsection{Résultat spectaculaire : TC vs Voiture}
-
-Le graphique \ref{fig:competition_tc} met en évidence une relation exceptionnelle entre transports en commun et voiture :
-
+Les indicateurs statistiques pour le couple \textbf{TC vs Voiture} sont sans ambiguïté :
 \begin{itemize}[label=\textbullet]
-    \item \textbf{$R^2 = 0.827$} : 82.7\% de la variance expliquée.
-    \item \textbf{p-value < 0.001} : Significativité statistique extrême.
-    \item \textbf{Pente = -0.940} : Taux de conversion quasi-unitaire.
+    \item \textbf{$R^2 = 0,827$} : Le modèle explique plus de 82\% de la variance observée, une valeur extrêmement élevée pour des données de flux.
+    \item \textbf{Pearson $r = -0,91$} : Une corrélation négative quasi-parfaite.
+    \item \textbf{Pente = -0,940} : Ce coefficient indique un \textbf{taux de conversion quasi-unitaire}.
 \end{itemize}
 
 \begin{quote}
-    \textbf{Interprétation majeure :} Pour chaque gain de 1\% des transports en commun, la voiture perd 0.94\%. Le report modal est quasi-direct et exclusif, démontrant une compétition frontale entre ces deux modes.
+    \textbf{Interprétation majeure :} Pour chaque gain de 1\% de part de marché des transports en commun, la voiture perd environ 0,94\%. Ce résultat démontre que le report modal s'opère de manière quasi-exclusive entre ces deux modes. La voiture et les TC sont en situation de compétition frontale et directe dans le système de transport francilien.
 \end{quote}
 
-\subsubsection{Absence de compétition avec les modes doux}
+\subsubsection{Indépendance des modes actifs}
 
-Contrairement à la relation TC-Voiture, les régressions TC vs modes doux montrent :
+À l'inverse, les régressions concernant la \textbf{Marche} et le \textbf{Vélo} montrent une absence totale de corrélation avec l'essor des transports collectifs :
+
 \begin{itemize}[label=\textbullet]
-    \item \textbf{TC vs Vélo} : $R^2 = 0.002$, p > 0.05
-    \item \textbf{TC vs Marche} : $R^2 = 0.003$, p > 0.05
-    \item \textbf{TC vs 2-roues} : $R^2 = 0.001$, p > 0.05
+    \item \textbf{TC vs Marche} : $R^2 = 0,002$ ($r = -0,05$).
+    \item \textbf{TC vs Vélo} : $R^2 = 0,003$ ($r = -0,06$).
 \end{itemize}
 
-Les transports en commun ne concurrencent pas directement les modes doux, confirmant leur complémentarité plutôt que leur substitution.
+Les pentes quasi-nulles prouvent que le développement des transports en commun ne se fait pas au détriment des modes actifs. Ces derniers obéissent à des logiques de proximité propres et complètent l'offre de transport sans entrer dans le cycle de compétition directe observé entre l'automobile et les transports collectifs.
+\subsection{Structure du choix modal selon la distance}
 
-\subsection{Structure distance-mode}
+L'analyse de l'impact de la distance sur le choix modal a nécessité une réflexion méthodologique approfondie afin de garantir la pertinence physique et mathématique des modèles statistiques employés.
+
+\subsubsection{Démarche de modélisation : de la parabole à la logistique}
+
+Puisque la variable à expliquer (l'ordonnée $Y$) représente une part de marché, elle est par nature une probabilité strictement bornée entre 0 et 1 (0\% et 100\%). Pour modéliser cette contrainte, nous avons procédé par itération en testant trois approches successives :
+
+\begin{description}
+    \item[1. Modèle Polynomial (Ordre 2) -- \textit{Rejeté}] : L'ajustement initial par une courbe parabolique créait un artefact mathématique irréaliste. Par définition, une parabole finit par changer de direction. Ainsi, les courbes de la marche et du vélo avaient tendance à "remonter" artificiellement au-delà de 40 km, ce qui est géographiquement absurde.
+    \item[2. Modèle Logarithmique -- \textit{Rejeté}] : Pour corriger ce rebond, une régression logarithmique a été testée afin de capturer la chute brutale (loi de décroissance spatiale). Cependant, le logarithme tendant vers l'infini négatif pour des valeurs proches de zéro, les courbes finissaient par passer en dessous de la barre des 0\% pour certains modes, ce qui est physiquement impossible pour une part de marché.
+    \item[3. Modèle Logistique -- \textit{Retenu}] : La régression logistique (courbe en "S") s'est imposée comme le modèle parfait. Mathématiquement bornée entre 0 et 1, elle empêche l'obtention de valeurs négatives ou supérieures à 100\%. De plus, elle gère parfaitement les asymptotes, permettant aux courbes des modes actifs de s'écraser doucement sur le zéro sur les longues distances, modélisant fidèlement la friction spatiale.
+\end{description}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{../data/output/final_results/5_structure_distance_mode.png}
-    \caption{Relations structurelles entre distance et parts modales}
+    \includegraphics[width=1\textwidth]{../data/output/correlation_analysis/5_structure_distance_mode.png}
+    \caption{Relations structurelles logistiques entre distance et parts modales}
     \label{fig:structure_distance}
 \end{figure}
 
-\subsubsection{Validation du modèle théorique}
+\subsubsection{Interprétation des dynamiques spatiales}
 
-L'analyse du graphique \ref{fig:structure_distance} révèle des dynamiques contrastées selon les modes, remettant partiellement en cause les modèles de proximité classiques pour les modes actifs :
+L'analyse du graphique \ref{fig:structure_distance}, issu de notre modélisation logistique finale, illustre parfaitement la \textbf{loi de friction de la distance} et confirme la complémentarité spatiale des modes :
 
 \begin{description}
-    \item[Transports en commun] Présentent une \textbf{croissance linéaire robuste} avec la distance. C'est le seul mode dont la part de marché progresse de manière constante, confirmant son rôle structurel pour la mobilité régionale à longue distance.
-    \item[Voiture] Affiche une \textbf{décroissance continue}. Contrairement au modèle en cloche, la voiture est massivement utilisée dès les courtes distances mais perd sa dominance au profit des TC au-delà de 40-50 km, là où le réseau ferré devient plus compétitif.
-    \item[Marche et Vélo] Bien que concentrés sur les flux de proximité (haute densité de points entre 0 et 10 km), les modèles de régression montrent une stagnation à bas niveau sur le reste du spectre. Les distances moyennes observées (autour de 10 km) suggèrent que ces modes ne sont plus cantonnés à l'hyper-proximité dans les déclarations de flux domicile-travail.
+    \item[Marche et Vélo (L'hyper-proximité)] : Les courbes bleue et violette illustrent une chute de type exponentielle. La part de marché est maximale sur les 5 premiers kilomètres, puis s'effondre pour glisser asymptotiquement le long de l'axe des abscisses (0\%). Ces modes obéissent à une contrainte d'effort physique stricte.
+    \item[Transports en commun (L'armature régionale)] : La courbe verte affiche une croissance logarithmique/logistique. Elle démarre bas sur les courtes distances (concurrencée par la marche/vélo) pour monter en puissance et devenir le mode structurant sur les moyennes et longues distances (au-delà de 20-30 km), soulignant l'efficacité du réseau ferré lourd (RER, Transilien).
+    \item[Voiture (L'érosion kilométrique)] : Bien que conservant un niveau global élevé, la courbe rouge montre une érosion douce et continue de sa part modale à mesure que la distance s'allonge. Sur les longs trajets, la voiture perd de sa compétitivité (fatigue, coût, péages, congestion) et cède mécaniquement des parts de marché aux transports en commun.
 \end{description}
 
 \subsubsection{Distances caractéristiques par mode}
 
+Bien que les parts de marché obéissent à des lois de décroissance ou de croissance, l'analyse des barycentres (distances moyennes pondérées par les volumes) permet de caractériser le domaine de pertinence de chaque mode dans la réalité des flux observés.
+
 \begin{table}[H]
     \centering
-    \caption{Distances moyennes de pratique par mode (valeurs observées)}
+    \caption{Distances moyennes de pratique par mode (valeurs observées en 2022)}
     \label{tab:distances_moyennes}
     \begin{tabular}{lr}
     \toprule
@@ -584,8 +676,7 @@ L'analyse du graphique \ref{fig:structure_distance} révèle des dynamiques cont
     \end{tabular}
 \end{table}
 
-Ces résultats (tableau \ref{tab:distances_moyennes}) confirment que les \textbf{Transports en Commun} sont le mode de la longue distance par excellence en Île-de-France, tandis que la \textbf{Voiture} reste ancrée sur des déplacements plus courts mais subit une érosion de sa part de marché face à l'allongement des trajets.
-
+Ces indicateurs macroscopiques (Tableau \ref{tab:distances_moyennes}) confirment que les \textbf{Transports en Commun} constituent le principal vecteur de la mobilité longue distance en Île-de-France. \textit{(Note : Les moyennes relativement hautes pour la marche et le vélo s'expliquent par l'existence statistique de flux déclarés sur de longues distances, potentiellement liés à des pratiques multimodales non dissociées dans les enquêtes, bien que la régression logistique démontre que l'écrasante majorité de l'usage effectif se fait sous les 5 km).}
 \subsection{Synthèse des résultats statistiques}
 
 \subsubsection{Validation des hypothèses de recherche}
@@ -662,7 +753,7 @@ Nos résultats ont des implications directes pour l'aménagement du territoire :
 Plusieurs pistes de développement pourraient enrichir cette analyse :
 \begin{itemize}[label=\textbullet]
     \item Intégration de variables socio-économiques pour affiner la compréhension des mécanismes de choix.
-    \item Utilisation de modèles plus sophistiqués (régressions logistiques, modèles de panel).
+    \item Utilisation de modèles plus sophistiqués (modèles de panel).
     \item Extension à d'autres territoires pour tester la généralisabilité des résultats.
     \item Intégration des données temps réel pour capturer la dynamique fine de la congestion.
 \end{itemize}
